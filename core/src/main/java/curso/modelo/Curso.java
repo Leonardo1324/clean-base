@@ -14,30 +14,20 @@ public class Curso {
         this.nombre = nombre;
         this.fecha_cierre_inscripcion = fecha_cierre_inscripcion;
         this.nivel = nivel;
-
-        // fecha de cierre no puede ser menor a la actual
-
-
     }
-
     public static Curso instance(UUID id, String nombre, LocalDate fecha_cierre, Valores nivel) {
-
 
         if (id == null || nombre == null || fecha_cierre == null || nivel == null){
             return null;
         }
-
         if (fecha_cierre.isBefore(LocalDate.now())){
             return null;
         }
         if( !(nivel.equals(Valores.INICIAL) || nivel.equals(Valores.MEDIO) || nivel.equals(Valores.AVANZADO)) ){
             return null;
         }
-
         return new Curso(id,nombre,fecha_cierre,nivel);
     }
-
-
     public String getNombre() {
         return this.nombre;
     }
