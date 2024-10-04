@@ -27,5 +27,6 @@ public class CrearCurso implements curso.input.CrearCurso {
             throw new ExceptionCursoMismoNombre("Ya existe curso con este nombre: " + micurso.getNombre());
         }
         return myDB.guardarCurso(micurso);
+        //prueba PR
     }
 }
