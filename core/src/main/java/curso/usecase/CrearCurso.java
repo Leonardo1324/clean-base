@@ -2,7 +2,7 @@ package curso.usecase;
 
 import curso.exception.ExceptionCursoMismoNombre;
 import curso.modelo.Curso;
-import curso.modelo.Valores;
+import curso.modelo.Nivel;
 import curso.output.Persistencia;
 
 import java.time.LocalDate;
@@ -21,12 +21,11 @@ public class CrearCurso implements curso.input.CrearCurso {
         this.myDB = myDB;
     }
     @Override
-    public boolean crearCurso(String nombre, LocalDate fecha, Valores nivel) {
+    public boolean crearCurso(String nombre, LocalDate fecha, Nivel nivel) {
         Curso micurso = Curso.instance(UUID.randomUUID(), nombre, fecha, nivel);
         if (myDB.existeCurso(micurso.getNombre())) {
             throw new ExceptionCursoMismoNombre("Ya existe curso con este nombre: " + micurso.getNombre());
         }
         return myDB.guardarCurso(micurso);
-        //prueba PR-3
     }
 }

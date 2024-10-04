@@ -1,8 +1,7 @@
 package usecase;
 
 import curso.exception.ExceptionCursoMismoNombre;
-import curso.modelo.Curso;
-import curso.modelo.Valores;
+import curso.modelo.Nivel;
 import curso.output.Persistencia;
 import curso.usecase.CrearCurso;
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +12,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,25 +24,25 @@ public class TestCrearCurso{
     void GuardarCurso() {
         CrearCurso micurso = new CrearCurso(BD);
         when(BD.guardarCurso(Mockito.any())).thenReturn(true);
-        Assertions.assertTrue(micurso.crearCurso("Matematicas",LocalDate.of(2025,8,15),Valores.MEDIO));
+        Assertions.assertTrue(micurso.crearCurso("Matematicas",LocalDate.of(2025,8,15), Nivel.MEDIO));
     }
     @Test
     void NoSePuedeGuardarCurso() {
         CrearCurso micurso = new CrearCurso(BD);
         when(BD.guardarCurso(Mockito.any())).thenReturn(false);
-        Assertions.assertFalse(micurso.crearCurso("Matematicas",LocalDate.of(2025,8,15),Valores.MEDIO));
+        Assertions.assertFalse(micurso.crearCurso("Matematicas",LocalDate.of(2025,8,15), Nivel.MEDIO));
     }
     @Test
     void CursoConElMismoNombre() {
         CrearCurso micurso = new CrearCurso(BD);
         when(BD.existeCurso("Matematicas")).thenReturn(true);
-        Assertions.assertThrows(ExceptionCursoMismoNombre.class,()-> micurso.crearCurso("Matematicas", LocalDate.of(2025,8,15), Valores.MEDIO));
+        Assertions.assertThrows(ExceptionCursoMismoNombre.class,()-> micurso.crearCurso("Matematicas", LocalDate.of(2025,8,15), Nivel.MEDIO));
     }
     @Test
     void CursoConElDistintoNombre() {
         CrearCurso micurso = new CrearCurso(BD);
         when(BD.existeCurso("Matematicas")).thenReturn(false);
-        Assertions.assertDoesNotThrow(() -> micurso.crearCurso("Matematicas", LocalDate.of(2025,8,15), Valores.MEDIO));
+        Assertions.assertDoesNotThrow(() -> micurso.crearCurso("Matematicas", LocalDate.MAX, Nivel.MEDIO));
     }
 
 }

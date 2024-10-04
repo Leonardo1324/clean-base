@@ -1,11 +1,10 @@
 package curso.input;
 
-import curso.modelo.Valores;
+import curso.modelo.Nivel;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 public interface CrearCurso {
-    boolean crearCurso(String nombre, LocalDate fecha, Valores nivel);
+    boolean crearCurso(String nombre, LocalDate fecha, Nivel nivel);
 
 }
