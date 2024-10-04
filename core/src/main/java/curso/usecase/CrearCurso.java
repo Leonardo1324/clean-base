@@ -20,12 +20,11 @@ public class CrearCurso implements curso.input.CrearCurso {
     public CrearCurso(Persistencia myDB) {
         this.myDB = myDB;
     }
-
     @Override
     public boolean crearCurso(String nombre, LocalDate fecha, Valores nivel) {
         Curso micurso = Curso.instance(UUID.randomUUID(), nombre, fecha, nivel);
-        if (myDB.existeCurso(micurso.getNombre())){
-            throw new ExceptionCursoMismoNombre("Ya existe curso con este nombre: "+micurso.getNombre());
+        if (myDB.existeCurso(micurso.getNombre())) {
+            throw new ExceptionCursoMismoNombre("Ya existe curso con este nombre: " + micurso.getNombre());
         }
         return myDB.guardarCurso(micurso);
     }
