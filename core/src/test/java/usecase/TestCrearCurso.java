@@ -1,6 +1,7 @@
 package usecase;
 
 import curso.exception.ExceptionCursoMismoNombre;
+import curso.modelo.Curso;
 import curso.modelo.Nivel;
 import curso.output.Persistencia;
 import curso.usecase.CrearCurso;
@@ -12,6 +13,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
