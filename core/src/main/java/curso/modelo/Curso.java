@@ -1,5 +1,7 @@
 package curso.modelo;
 
+import curso.exception.ExceptionAtributosCursoIncorrectos;
+
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -18,16 +20,16 @@ public class Curso {
     public static Curso instance(UUID id, String nombre, LocalDate fecha_cierre, Nivel nivel) {
 
         if (id == null || nombre == null || fecha_cierre == null || nivel == null){
-            return null; // E valor nulo
+            throw new ExceptionAtributosCursoIncorrectos("Algun atributo es nulo");
         }
         if (nombre.isEmpty()){
-            return null; // E Cadeba vacia
+            throw new ExceptionAtributosCursoIncorrectos("La cadena de texto esta vacia");
         }
         if (fecha_cierre.isBefore(LocalDate.now())){
-            return null; //E fecha anteriro a la de hoy
+            throw new ExceptionAtributosCursoIncorrectos("La fecha ya paso");
         }
         if( !(nivel.equals(Nivel.INICIAL) || nivel.equals(Nivel.MEDIO) || nivel.equals(Nivel.AVANZADO)) ){
-            return null; // valor diferente a los permitidos
+            throw new ExceptionAtributosCursoIncorrectos("El Nivel no coincide con uno permitido");
         }
         return new Curso(id,nombre,fecha_cierre,nivel);
     }
