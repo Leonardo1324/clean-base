@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class TestCurso {
     @Test
     @Order(1)
-    void atributos_obligatorios_correctos() {
+    void atributosObligatoriosCorrectos() {
         Curso micurso = Curso.instance(UUID.randomUUID(),"Matematicas",LocalDate.MAX, Nivel.INICIAL);
         assertNotNull(micurso);
     }
     @Test
     @Order(2)
-    void atributos_nulos() {
+    void atributosNulos() {
         Curso micurso;
         Exception e;
         e = Assertions.assertThrows(ExceptionAtributosCursoIncorrectos.class,()-> Curso.instance(UUID.randomUUID(),null,LocalDate.MAX, Nivel.INICIAL));
@@ -30,7 +30,7 @@ public class TestCurso {
     }
     @Test
     @Order(3)
-    void Nombre_Cadena_Vacia() {
+    void NombreCadenaVacia() {
         Curso micurso;
         Exception e;
         e = Assertions.assertThrows(ExceptionAtributosCursoIncorrectos.class,()-> Curso.instance(UUID.randomUUID(),"",LocalDate.MAX, Nivel.INICIAL));
@@ -38,7 +38,7 @@ public class TestCurso {
     }
     @Test
     @Order(4)
-    void fecha_anterior_a_hoy() {
+    void fechaAnteriorAHoy() {
         Curso micurso;
         Exception e;
         e = Assertions.assertThrows(ExceptionAtributosCursoIncorrectos.class,()-> Curso.instance(UUID.randomUUID(),"Matematicas",LocalDate.MIN, Nivel.INICIAL));
@@ -46,13 +46,13 @@ public class TestCurso {
     }
     @Test
     @Order(5)
-    void fecha_posterior_a_hoy() {
+    void fechaPosteriorAHoy() {
         Curso micurso;
         Assertions.assertDoesNotThrow(()-> Curso.instance(UUID.randomUUID(),"Matematicas",LocalDate.MAX, Nivel.INICIAL));
     }
     @Test
     @Order(6)
-    void enum_diferente() {
+    void enumDiferente() {
         Curso micurso;
         Exception e;
         e = Assertions.assertThrows(ExceptionAtributosCursoIncorrectos.class,()-> Curso.instance(UUID.randomUUID(),"Matematicas",LocalDate.MAX, Nivel.PRO));
