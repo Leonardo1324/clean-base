@@ -1,0 +1,31 @@
+package curso.usecase;
+
+import curso.exception.ExceptionCursoMismoNombre;
+import curso.modelo.Curso;
+import curso.modelo.Nivel;
+import curso.output.Persistencia;
+
+import java.time.LocalDate;
+import java.util.UUID;
+
+
+//intarfaz de caso de uso input
+//clase que implenta la interfaz del caso de uso
+//interfaz de persistencia outpot
+//utilizar la persistencia en el constructor del caso de uso
+
+
+public class CrearCurso implements curso.input.CrearCurso {
+    private Persistencia myDB;
+    public CrearCurso(Persistencia myDB) {
+        this.myDB = myDB;
+    }
+    @Override
+    public boolean crearCurso(String nombre, LocalDate fecha, Nivel nivel) {
+        Curso micurso = Curso.instance(UUID.randomUUID(), nombre, fecha, nivel);
+        if (myDB.existeCurso(micurso.getNombre())) {
+            throw new ExceptionCursoMismoNombre("Ya existe curso con este nombre: " + micurso.getNombre());
+        }
+        return myDB.guardarCurso(micurso);
+    }
+}
