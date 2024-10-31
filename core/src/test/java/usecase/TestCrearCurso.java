@@ -1,43 +1,51 @@
 package usecase;
 
-import curso.exception.ExceptionCursoConMismoNombre;
+import curso.exception.ExceptionCursoMismoNombre;
+import curso.modelo.Curso;
 import curso.modelo.Nivel;
-import curso.output.Peristence;
+import curso.output.Persistencia;
 import curso.usecase.CrearCurso;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
-public class TestCrearCurso {
-
+public class TestCrearCurso{
     @Mock
-    Peristence BD;
-
+    Persistencia BD;
     @Test
-    void CursoYaExiste() {
+    void CursoConElDistintoNombreSeGuardaElCurso() {
+        CrearCurso micurso = new CrearCurso(BD);
+        when(BD.existeCurso("Matematicas")).thenReturn(false);// ese curso no existe
+        when(BD.guardarCurso(Mockito.any())).thenReturn(true);
+        Assertions.assertDoesNotThrow(() -> micurso.crearCurso("Matematicas", LocalDate.MAX, Nivel.MEDIO));
+        Assertions.assertTrue(micurso.crearCurso("Matematicas", LocalDate.MAX, Nivel.MEDIO));
+    }
+    @Test
+    void CursoConElDistintoNombreNoSeGuardaElCurso() {
+        CrearCurso micurso = new CrearCurso(BD);
+        when(BD.existeCurso("Matematicas")).thenReturn(false);// ese curso no existe
+        when(BD.guardarCurso(Mockito.any())).thenReturn(false);
+        Assertions.assertDoesNotThrow(() -> micurso.crearCurso("Matematicas", LocalDate.MAX, Nivel.MEDIO));
+        Assertions.assertFalse(micurso.crearCurso("Matematicas", LocalDate.MAX, Nivel.MEDIO));
+    }
+    @Test
+    void CursoConElMismoNombre() {
+        CrearCurso micurso = new CrearCurso(BD);
         Exception e;
-        CrearCurso cc = new CrearCurso(BD);
-        when(BD.existeCurso("Lengua")).thenReturn(Boolean.TRUE);// existe
-        e = Assertions.assertThrows(ExceptionCursoConMismoNombre.class,()->cc.RegsistarCurso(UUID.randomUUID(),"Lengua", LocalDate.MAX, Nivel.INICIAL));
-        Assertions.assertEquals("El curso con el nombre: Lengua ya existe",e.getMessage());
-        verify(BD,never()).gurdarCurso(any());
+        when(BD.existeCurso("Matematicas")).thenReturn(true); // ese curso ya existe
+        e = Assertions.assertThrows(ExceptionCursoMismoNombre.class,()-> micurso.crearCurso("Matematicas", LocalDate.MAX, Nivel.MEDIO));
+        verify(BD,never()).guardarCurso(Mockito.any());
+        Assertions.assertEquals("Ya existe curso con este nombre: Matematicas",e.getMessage());
     }
-    @Test
-    void CursoNOExiste() {
-        CrearCurso cc = new CrearCurso(BD);
-        when(BD.existeCurso("Lengua")).thenReturn(Boolean.FALSE);// no existe
-        when(BD.gurdarCurso(any())).thenReturn(Boolean.TRUE);
-        Assertions.assertDoesNotThrow(()->cc.RegsistarCurso(UUID.randomUUID(),"Lengua", LocalDate.MAX, Nivel.INICIAL));
-        Assertions.assertTrue(()->cc.RegsistarCurso(UUID.randomUUID(),"Lengua", LocalDate.MAX, Nivel.INICIAL));
-    }
-
-
-
 }

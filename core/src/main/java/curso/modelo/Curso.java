@@ -1,28 +1,39 @@
 package curso.modelo;
 
-import curso.exception.ExceptionNombreVacio;
+import curso.exception.ExceptionAtributosCursoIncorrectos;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-
 public class Curso {
     private UUID id;
-    private String name;
-    private LocalDate date;
-    private Nivel lvl;
+    private String nombre;
+    private LocalDate fechaCierreInscripcion;
+    private Nivel nivel;
 
-    public Curso(UUID id, String name, LocalDate date, Nivel lvl) {
+    private Curso(UUID id, String nombre, LocalDate fechaCierreInscripcion, Nivel nivel) {
         this.id = id;
-        this.name = name;
-        this.date = date;
-        this.lvl = lvl;
+        this.nombre = nombre;
+        this.fechaCierreInscripcion = fechaCierreInscripcion;
+        this.nivel = nivel;
     }
+    public static Curso instance(UUID id, String nombre, LocalDate fechaCierre, Nivel nivel) {
 
-    public static Curso Instance(UUID id, String name, LocalDate date, Nivel lvl){
-        if (name.isEmpty()){
-            throw new ExceptionNombreVacio("El nombre no puede ser vacio");
+        if (id == null || nombre == null || fechaCierre == null || nivel == null){
+            throw new ExceptionAtributosCursoIncorrectos("Algun atributo es nulo");
         }
-        return new Curso(id,name,date,lvl);
+        if (nombre.isEmpty()){
+            throw new ExceptionAtributosCursoIncorrectos("La cadena de texto esta vacia");
+        }
+        if (fechaCierre.isBefore(LocalDate.now())){
+            throw new ExceptionAtributosCursoIncorrectos("La fecha ya paso");
+        }
+        if( !(nivel.equals(Nivel.INICIAL) || nivel.equals(Nivel.MEDIO) || nivel.equals(Nivel.AVANZADO)) ){
+            throw new ExceptionAtributosCursoIncorrectos("El Nivel no coincide con uno permitido");
+        }
+        return new Curso(id,nombre,fechaCierre,nivel);
+    }
+    public String getNombre() {
+        return this.nombre;
     }
 }
