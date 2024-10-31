@@ -3,6 +3,7 @@ package curso.output;
 import curso.modelo.Curso;
 import curso.modelo.Nivel;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public interface PersistenceBuscar {
@@ -11,5 +12,7 @@ public interface PersistenceBuscar {
 
     ArrayList<Curso> RecuperarCursosNombre(String name);
 
-    ArrayList<Curso> RecuperCursosNivel(Nivel lvl);
+    ArrayList<Curso> RecuperarCursosNivel(Nivel lvl);
+
+    ArrayList<Curso> RecuperarCursosPorFechas(LocalDate rangoInicio, LocalDate rangoFin);
 }

@@ -25,6 +25,20 @@ public class TestBuscarCurso {
     PersistenceBuscar BD;
 
     @Test
+    void BuscarCursoParteDelNombreIndividual() {
+        Curso c2 = Curso.instance(UUID.randomUUID(),"Matematica", LocalDate.MAX, Nivel.INICIAL);
+
+        ArrayList<Curso> misCursosCorrecto = new ArrayList<Curso>();
+
+        misCursosCorrecto.add(c2);
+
+        BuscarCurso bc = new BuscarCurso(BD);
+        when(bc.BuscarCursosPorParteDelNombre("Matematica")).thenReturn(misCursosCorrecto);
+        Assertions.assertDoesNotThrow(()->bc.BuscarCursosPorParteDelNombre("Matematica"));
+        Assertions.assertEquals(misCursosCorrecto,bc.BuscarCursosPorParteDelNombre("Matematica"));
+    }
+
+    @Test
     void BuscarCursoParteDelNombreMinusculas() {
         Curso c2 = Curso.instance(UUID.randomUUID(),"Matematica", LocalDate.MAX, Nivel.INICIAL);
         Curso c3 = Curso.instance(UUID.randomUUID(),"Agromatica", LocalDate.MAX, Nivel.INICIAL);
@@ -78,4 +92,14 @@ public class TestBuscarCurso {
         e = Assertions.assertThrows(ExceptionNoHayCoicidenciasNivel.class,()->bc.BuscarCursosPorNivel(Nivel.MEDIO));
         Assertions.assertEquals("No hay cursos con ese nivel",e.getMessage());
     }
+
+    @Test
+    void BuscarCursoPorRangoDeFechas() {
+        Exception e;
+        BuscarCurso bc = new BuscarCurso(BD);
+        when(bc.BuscarCursosPorNivel(Nivel.MEDIO)).thenReturn(null);
+        e = Assertions.assertThrows(ExceptionNoHayCoicidenciasNivel.class,()->bc.BuscarCursosPorNivel(Nivel.MEDIO));
+        Assertions.assertEquals("No hay cursos con ese nivel",e.getMessage());
+    }
+
 }
