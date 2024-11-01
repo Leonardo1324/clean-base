@@ -1,5 +1,6 @@
 package curso.usecase;
 
+import curso.exception.ExceptionFechaInvalida;
 import curso.exception.ExceptionNoHayCoicidencias;
 import curso.exception.ExceptionNoHayCoicidenciasNivel;
 import curso.exception.ExceptionNoHayCursosEnEseRango;
@@ -17,7 +18,6 @@ public class BuscarCurso implements curso.input.BuscarCurso {
         this.myBD = myBD;
     }
 
-
     @Override
     public ArrayList<Curso> BuscarCursosPorParteDelNombre(String name) {
         if (myBD.RecuperarCursosNombre(name)==null){
@@ -29,12 +29,12 @@ public class BuscarCurso implements curso.input.BuscarCurso {
     @Override
     public ArrayList<Curso> BuscarCursosPorRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         if (fechaInicio.isBefore(LocalDate.now()) || fechaFin.isBefore(LocalDate.now()) || fechaInicio.isEqual(fechaFin)){
-            // fecha invaldia
+            throw new ExceptionFechaInvalida("Las fechas ingresadas no son correctas");
         }
         if (myBD.RecuperarCursosPorFechas(fechaInicio,fechaFin)==null){
             throw new ExceptionNoHayCursosEnEseRango("No hay cursos en ese rango de fecahs");
         }
-        return null;
+        return myBD.RecuperarCursosPorFechas(fechaInicio,fechaFin);
     }
 
     @Override
