@@ -20,10 +20,11 @@ public class BuscarCurso implements curso.input.BuscarCurso {
 
     @Override
     public ArrayList<Curso> BuscarCursosPorParteDelNombre(String name) {
-        if (myBD.RecuperarCursosNombre(name)==null){
+        ArrayList<Curso> cursosObtenidos = myBD.RecuperarCursosNombre(name);
+        if (cursosObtenidos==null){
             throw new ExceptionNoHayCoicidencias("No hay ningun curso con ese nombre");
         }
-        return myBD.RecuperarCursosNombre(name);
+        return cursosObtenidos;
     }
 
     @Override
@@ -31,18 +32,20 @@ public class BuscarCurso implements curso.input.BuscarCurso {
         if (fechaInicio.isBefore(LocalDate.now()) || fechaFin.isBefore(LocalDate.now()) || fechaInicio.isEqual(fechaFin)){
             throw new ExceptionFechaInvalida("Las fechas ingresadas no son correctas");
         }
-        if (myBD.RecuperarCursosPorFechas(fechaInicio,fechaFin)==null){
+        ArrayList<Curso> cursosObtenidos = myBD.RecuperarCursosPorFechas(fechaInicio,fechaFin);
+        if (cursosObtenidos==null){
             throw new ExceptionNoHayCursosEnEseRango("No hay cursos en ese rango de fecahs");
         }
-        return myBD.RecuperarCursosPorFechas(fechaInicio,fechaFin);
+        return cursosObtenidos;
     }
 
     @Override
     public ArrayList<Curso> BuscarCursosPorNivel(Nivel lvl) {
-        if (myBD.RecuperarCursosNivel(lvl)==null){
+        ArrayList<Curso> cursosObtenidos = myBD.RecuperarCursosNivel(lvl) ;
+        if (cursosObtenidos==null){
             throw new ExceptionNoHayCoicidenciasNivel("No hay cursos con ese nivel");
         }
-        return myBD.RecuperarCursosNivel(lvl);
+        return cursosObtenidos;
     }
 
 }
